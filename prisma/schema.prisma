@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    binaryTargets   = ["native"]
 }
 
 datasource db {
@@ -12,6 +13,12 @@ datasource db {
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
+}
+
+enum Tier {
+    FREE
+    PRO
+    ENTERPRISE
 }
 
 model Post {
@@ -59,10 +66,12 @@ model User {
     name          String?
     email         String?   @unique
     emailVerified DateTime?
+    password      String?   // Hashed password for credentials login
     image         String?
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    tier          Tier      @default(FREE)
 }
 
 model VerificationToken {
