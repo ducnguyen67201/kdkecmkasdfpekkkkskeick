@@ -1,8 +1,12 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import Auth0Provider from "next-auth/providers/auth0";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 import { db } from "~/server/db";
+import { env } from "~/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -32,7 +36,67 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
+    // Email/Password login
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        const user = await db.user.findUnique({
+          where: { email: credentials.email as string },
+        });
+
+        if (!user || !user.password) {
+          return null;
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password as string,
+          user.password,
+        );
+
+        if (!isPasswordValid) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        };
+      },
+    }),
+    // Only include Discord provider if credentials are configured
+    ...(env.AUTH_DISCORD_ID &&
+    env.AUTH_DISCORD_SECRET &&
+    !env.AUTH_DISCORD_ID.includes("placeholder")
+      ? [DiscordProvider]
+      : []),
+    // Only include Auth0 provider if credentials are configured
+    ...(env.AUTH0_CLIENT_ID &&
+    env.AUTH0_CLIENT_SECRET &&
+    env.AUTH0_DOMAIN &&
+    !env.AUTH0_CLIENT_ID.includes("placeholder")
+      ? [
+          Auth0Provider({
+            clientId: env.AUTH0_CLIENT_ID,
+            clientSecret: env.AUTH0_CLIENT_SECRET,
+            issuer: `https://${env.AUTH0_DOMAIN}`,
+            authorization: {
+              params: {
+                prompt: "login", // Force Auth0 to show login screen
+              },
+            },
+          }),
+        ]
+      : []),
     /**
      * ...add more providers here.
      *
@@ -44,13 +108,21 @@ export const authConfig = {
      */
   ],
   adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt", // Use JWT for Credentials provider
+  },
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
 } satisfies NextAuthConfig;

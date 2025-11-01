@@ -10,9 +10,11 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { getCookie } from "cookies-next";
 
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
+import { verifyAuth0Token, type Auth0User } from "~/server/auth0";
 
 /**
  * 1. CONTEXT
@@ -29,9 +31,24 @@ import { db } from "~/server/db";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
 
+  // Check for Auth0 token in cookies
+  let auth0User: Auth0User | null = null;
+  try {
+    const auth0Token = getCookie("auth0_token", {
+      req: { headers: opts.headers } as any
+    });
+
+    if (auth0Token && typeof auth0Token === "string") {
+      auth0User = await verifyAuth0Token(auth0Token);
+    }
+  } catch (error) {
+    console.error("Failed to verify Auth0 token:", error);
+  }
+
   return {
     db,
     session,
+    auth0User,
     ...opts,
   };
 };
@@ -128,6 +145,29 @@ export const protectedProcedure = t.procedure
       ctx: {
         // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+/**
+ * Auth0 protected procedure
+ *
+ * Only accessible to users authenticated via Auth0.
+ * Verifies the Auth0 token from cookies and ensures auth0User is not null.
+ */
+export const auth0Procedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.auth0User) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Auth0 authentication required",
+      });
+    }
+    return next({
+      ctx: {
+        // infers the `auth0User` as non-nullable
+        auth0User: ctx.auth0User,
       },
     });
   });
