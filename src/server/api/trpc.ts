@@ -10,7 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
@@ -34,12 +34,11 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   // Check for Auth0 token in cookies
   let auth0User: Auth0User | null = null;
   try {
-    const auth0Token = getCookie("auth0_token", {
-      req: { headers: opts.headers } as any
-    });
+    const cookieStore = await cookies();
+    const auth0Token = cookieStore.get("auth0_token");
 
-    if (auth0Token && typeof auth0Token === "string") {
-      auth0User = await verifyAuth0Token(auth0Token);
+    if (auth0Token?.value) {
+      auth0User = await verifyAuth0Token(auth0Token.value);
     }
   } catch (error) {
     console.error("Failed to verify Auth0 token:", error);

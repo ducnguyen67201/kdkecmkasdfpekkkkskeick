@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { setCookie } from "cookies-next";
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { verifyAuth0Token, getOrCreateAuth0User } from "~/server/auth0";
 import { TRPCError } from "@trpc/server";
 
 const AUTH0_COOKIE_NAME = "auth0_token";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days in seconds
 
 export const authRouter = createTRPCRouter({
   /**
@@ -88,9 +88,8 @@ export const authRouter = createTRPCRouter({
       }
 
       // Set Auth0 token in cookie
-      // Note: In Next.js App Router with tRPC, we need to access headers differently
-      // The cookie will be set on the response
-      setCookie(AUTH0_COOKIE_NAME, input.token, {
+      const cookieStore = await cookies();
+      cookieStore.set(AUTH0_COOKIE_NAME, input.token, {
         maxAge: COOKIE_MAX_AGE,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -102,9 +101,9 @@ export const authRouter = createTRPCRouter({
         success: true,
         user: {
           id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
+          email: user.email ?? "",
+          name: user.name ?? "",
+          image: user.image ?? "",
           tier: user.tier,
         },
       };
@@ -114,10 +113,8 @@ export const authRouter = createTRPCRouter({
    * Logout - clear Auth0 token cookie
    */
   logout: publicProcedure.mutation(async () => {
-    setCookie(AUTH0_COOKIE_NAME, "", {
-      maxAge: 0,
-      path: "/",
-    });
+    const cookieStore = await cookies();
+    cookieStore.delete(AUTH0_COOKIE_NAME);
 
     return { success: true };
   }),
@@ -139,9 +136,9 @@ export const authRouter = createTRPCRouter({
 
     return {
       id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
+      email: user.email ?? "",
+      name: user.name ?? "",
+      image: user.image ?? "",
       tier: user.tier,
     };
   }),

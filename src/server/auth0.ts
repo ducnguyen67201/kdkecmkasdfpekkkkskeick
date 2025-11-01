@@ -1,4 +1,5 @@
 import { jwtVerify } from "jose";
+import type { PrismaClient } from "@prisma/client";
 import { env } from "~/env";
 
 export interface Auth0User {
@@ -38,8 +39,8 @@ export async function verifyAuth0Token(
  */
 export async function getOrCreateAuth0User(
   auth0User: Auth0User,
-  db: any,
-): Promise<any> {
+  db: PrismaClient,
+) {
   // Check if user exists by email
   let user = await db.user.findUnique({
     where: { email: auth0User.email },

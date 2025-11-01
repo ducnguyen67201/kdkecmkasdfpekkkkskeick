@@ -17,7 +17,10 @@ export const env = createEnv({
     AUTH0_CLIENT_ID: z.string().optional(),
     AUTH0_CLIENT_SECRET: z.string().optional(),
     AUTH0_AUDIENCE: z.string().optional(),
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL:
+      process.env.NODE_ENV === "production"
+        ? z.string().url()
+        : z.string().url().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),

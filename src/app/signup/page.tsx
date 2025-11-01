@@ -24,8 +24,8 @@ export default function SignUpPage() {
       setTimeout(() => {
         window.location.href = "/api/auth/signin";
       }, 2000);
-    } catch (err: any) {
-      setError(err.message || "Failed to create account");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create account");
     }
   };
 
