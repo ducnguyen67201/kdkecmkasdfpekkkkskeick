@@ -111,6 +111,11 @@ export const authConfig = {
   session: {
     strategy: "jwt", // Use JWT for Credentials provider
   },
+  pages: {
+    signIn: "/signin",
+    signOut: "/signout",
+    error: "/signin", // Redirect to signin page on error
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

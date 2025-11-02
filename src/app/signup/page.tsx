@@ -1,143 +1,193 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { api } from "~/trpc/react";
-import Link from "next/link";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import Link from "next/link"
+
+import { Button } from "~/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form"
+import { Input } from "~/components/ui/input"
+import { OctoLabIcon } from "~/components/ui/octolab-icon"
+import { ShieldCheck, CheckCircle2 } from "lucide-react"
+import { api } from "~/trpc/react"
+
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+})
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const router = useRouter()
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState(false)
 
-  const signUp = api.auth.signUp.useMutation();
+  const signUp = api.auth.signUp.useMutation()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  })
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await signUp.mutateAsync({ email, password, name });
-      setSuccess(true);
+      setError("")
+      await signUp.mutateAsync(values)
+      setSuccess(true)
       // Redirect to sign in page after 2 seconds
       setTimeout(() => {
-        window.location.href = "/api/auth/signin";
-      }, 2000);
+        router.push("/signin")
+      }, 2000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create account");
+      setError(err instanceof Error ? err.message : "Failed to create account")
     }
-  };
+  }
 
   if (success) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <div className="flex flex-col items-center gap-4 rounded-xl bg-white/10 p-8">
-            <h1 className="text-3xl font-bold text-green-400">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
+            <div className="mb-4 flex justify-center">
+              <CheckCircle2 className="h-16 w-16 text-green-600" />
+            </div>
+            <h1 className="mb-2 text-2xl font-bold text-green-600">
               Account Created Successfully!
             </h1>
-            <p className="text-lg">Redirecting to sign in...</p>
+            <p className="text-sm text-gray-600">
+              Redirecting to sign in page...
+            </p>
           </div>
         </div>
-      </main>
-    );
+      </div>
+    )
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Sign <span className="text-[hsl(280,100%,70%)]">Up</span>
-        </h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
+      {/* Logo in top-left */}
+      <div className="fixed left-6 top-6 flex items-center gap-2">
+        <OctoLabIcon className="h-8 w-8" />
+        <span className="text-xl font-bold">OctoLab</span>
+      </div>
 
-        <div className="w-full max-w-md">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 rounded-xl bg-white/10 p-8"
-          >
-            <div className="flex flex-col gap-2">
-              <label htmlFor="name" className="text-sm font-medium">
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="rounded-lg bg-white/20 px-4 py-2 text-white placeholder-white/50 outline-none focus:bg-white/30"
-                placeholder="John Doe"
+      <div className="w-full max-w-md">
+        {/* Main Card */}
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+          {/* Icon */}
+          <div className="mb-6 flex justify-center">
+            <OctoLabIcon />
+          </div>
+
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <h1 className="mb-2 text-2xl font-bold">Join OctoLab</h1>
+            <p className="text-sm text-gray-600">
+              Create your account to get started
+            </p>
+          </div>
+
+          {/* Form */}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="rounded-lg bg-white/20 px-4 py-2 text-white placeholder-white/50 outline-none focus:bg-white/30"
-                placeholder="john@example.com"
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-sm font-medium">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-                className="rounded-lg bg-white/20 px-4 py-2 text-white placeholder-white/50 outline-none focus:bg-white/30"
-                placeholder="Min 8 characters"
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Min 8 characters"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <p className="text-xs text-white/70">
-                Password must be at least 8 characters
-              </p>
-            </div>
 
-            {error && (
-              <div className="rounded-lg bg-red-500/20 p-3 text-sm text-red-200">
-                {error}
-              </div>
-            )}
+              {/* Error Message */}
+              {error && (
+                <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
+                  {error}
+                </div>
+              )}
 
-            <button
-              type="submit"
-              disabled={signUp.isPending}
-              className="mt-4 rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20 disabled:opacity-50"
-            >
-              {signUp.isPending ? "Creating Account..." : "Sign Up"}
-            </button>
-
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link
-                href="/api/auth/signin"
-                className="text-[hsl(280,100%,70%)] underline hover:text-[hsl(280,100%,80%)]"
+              {/* Sign Up Button */}
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={signUp.isPending}
               >
-                Sign In
-              </Link>
-            </div>
-          </form>
+                {signUp.isPending ? "Creating Account..." : "Create Account"}
+              </Button>
+            </form>
+          </Form>
+
+          {/* Already have account */}
+          <div className="mt-6 flex items-center justify-center gap-1 text-sm">
+            <span className="text-gray-600">Already have an account?</span>
+            <Link href="/signin" className="text-blue-600 hover:underline">
+              Sign in
+            </Link>
+          </div>
         </div>
 
-        <Link
-          href="/"
-          className="text-sm text-white/70 underline hover:text-white"
-        >
-          Back to Home
-        </Link>
+        {/* Security Notice */}
+        <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+          <ShieldCheck className="h-4 w-4" />
+          <span>
+            Secured with enterprise-grade encryption and multi-factor
+            authentication
+          </span>
+        </div>
       </div>
-    </main>
-  );
+    </div>
+  )
 }
