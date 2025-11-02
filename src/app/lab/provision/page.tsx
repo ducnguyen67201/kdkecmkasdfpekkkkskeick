@@ -200,7 +200,7 @@ export default function ProvisionPage() {
       case "failed":
         return <XCircle className="h-5 w-5 text-red-500" />;
       default:
-        return <Circle className="h-5 w-5 text-muted-foreground" />;
+        return <Circle className="text-muted-foreground h-5 w-5" />;
     }
   };
 
@@ -209,21 +209,18 @@ export default function ProvisionPage() {
   const overallProgress = (completedSteps / totalSteps) * 100;
 
   return (
-    <div className="container mx-auto min-h-screen bg-background p-4">
+    <div className="bg-background container mx-auto min-h-screen p-4">
       <div className="mx-auto max-w-5xl py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold">Provisioning Lab #{labId}</h1>
-              <p className="mt-2 text-muted-foreground">
+              <p className="text-muted-foreground mt-2">
                 Setting up your testing environment...
               </p>
             </div>
-            <Badge
-              variant="outline"
-              className="flex items-center gap-2"
-            >
+            <Badge variant="outline" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
               ETA: {overallETA}
             </Badge>
@@ -235,7 +232,9 @@ export default function ProvisionPage() {
               <span className="text-muted-foreground">
                 Overall Progress: {completedSteps} / {totalSteps} steps
               </span>
-              <span className="font-medium">{Math.round(overallProgress)}%</span>
+              <span className="font-medium">
+                {Math.round(overallProgress)}%
+              </span>
             </div>
             <Progress value={overallProgress} />
           </div>
@@ -267,15 +266,20 @@ export default function ProvisionPage() {
                         >
                           {index + 1}/5 {step.name}
                         </p>
-                        {step.status === "running" && step.progress !== undefined && (
-                          <span className="text-sm text-muted-foreground">
-                            {step.progress}%
-                          </span>
-                        )}
+                        {step.status === "running" &&
+                          step.progress !== undefined && (
+                            <span className="text-muted-foreground text-sm">
+                              {step.progress}%
+                            </span>
+                          )}
                       </div>
-                      {step.status === "running" && step.progress !== undefined && (
-                        <Progress value={step.progress} className="mt-2 h-1" />
-                      )}
+                      {step.status === "running" &&
+                        step.progress !== undefined && (
+                          <Progress
+                            value={step.progress}
+                            className="mt-2 h-1"
+                          />
+                        )}
                     </div>
                   </div>
                 ))}
@@ -302,11 +306,13 @@ export default function ProvisionPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[400px] rounded-lg border bg-muted/30 p-4 font-mono text-xs">
+              <ScrollArea className="bg-muted/30 h-[400px] rounded-lg border p-4 font-mono text-xs">
                 <div className="space-y-1">
                   {logs.map((log, index) => (
                     <div key={index} className="flex gap-2">
-                      <span className="text-muted-foreground">[{log.timestamp}]</span>
+                      <span className="text-muted-foreground">
+                        [{log.timestamp}]
+                      </span>
                       <span
                         className={
                           log.type === "success"
@@ -321,9 +327,13 @@ export default function ProvisionPage() {
                     </div>
                   ))}
                   {!isCancelled && completedSteps < totalSteps && (
-                    <div className="flex gap-2 animate-pulse">
+                    <div className="flex animate-pulse gap-2">
                       <span className="text-muted-foreground">
-                        [{new Date().toLocaleTimeString("en-US", { hour12: false })}]
+                        [
+                        {new Date().toLocaleTimeString("en-US", {
+                          hour12: false,
+                        })}
+                        ]
                       </span>
                       <span>Processing...</span>
                     </div>
@@ -360,7 +370,7 @@ export default function ProvisionPage() {
         </div>
 
         {/* Help Text */}
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-6 text-center text-sm">
           This process typically takes 2-4 minutes. You&apos;ll be redirected
           automatically when ready.
         </p>

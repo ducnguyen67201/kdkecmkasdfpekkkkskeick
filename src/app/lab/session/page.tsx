@@ -109,20 +109,20 @@ export default function LabSessionPage() {
       case "command":
         return <Terminal className="h-4 w-4 text-blue-500" />;
       case "file_upload":
-        return <FileText className="h-4 w-4 text-primary" />;
+        return <FileText className="text-primary h-4 w-4" />;
       case "connection":
         return <Activity className="h-4 w-4 text-yellow-500" />;
     }
   };
 
   return (
-    <div className="container mx-auto min-h-screen bg-background p-4">
+    <div className="bg-background container mx-auto min-h-screen p-4">
       <div className="mx-auto max-w-7xl py-8">
         {/* Header */}
         <div className="mb-8 flex items-start justify-between">
           <div>
             <h1 className="text-4xl font-bold">Lab Session #{labId}</h1>
-            <p className="mt-2 text-muted-foreground">
+            <p className="text-muted-foreground mt-2">
               CVE-2023-36212 - TotalCMS v1.7.4
             </p>
           </div>
@@ -132,7 +132,9 @@ export default function LabSessionPage() {
               Active
             </Badge>
             <div className="text-right text-sm">
-              <p className="text-muted-foreground">Uptime: {formatTime(uptime)}</p>
+              <p className="text-muted-foreground">
+                Uptime: {formatTime(uptime)}
+              </p>
               <p className="text-muted-foreground">
                 Remaining: {formatTimeRemaining(timeRemaining)}
               </p>
@@ -154,11 +156,7 @@ export default function LabSessionPage() {
                   {formatTimeRemaining(timeRemaining)}. Consider requesting an
                   extension or saving your evidence.
                 </p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-2"
-                >
+                <Button size="sm" variant="outline" className="mt-2">
                   Request Extension
                 </Button>
               </div>
@@ -178,29 +176,20 @@ export default function LabSessionPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="rounded-lg border bg-card p-4">
-                  <h3 className="mb-2 font-semibold">
-                    Target: TotalCMS
-                  </h3>
-                  <p className="mb-3 text-sm text-muted-foreground">
+                <div className="bg-card rounded-lg border p-4">
+                  <h3 className="mb-2 font-semibold">Target: TotalCMS</h3>
+                  <p className="text-muted-foreground mb-3 text-sm">
                     Web application on port 8080
                   </p>
-                  <Button className="w-full">
-                    Open Browser Terminal
-                  </Button>
+                  <Button className="w-full">Open Browser Terminal</Button>
                 </div>
 
-                <div className="rounded-lg border bg-card p-4">
-                  <h3 className="mb-2 font-semibold">
-                    Kali Linux Desktop
-                  </h3>
-                  <p className="mb-3 text-sm text-muted-foreground">
+                <div className="bg-card rounded-lg border p-4">
+                  <h3 className="mb-2 font-semibold">Kali Linux Desktop</h3>
+                  <p className="text-muted-foreground mb-3 text-sm">
                     Full desktop via Guacamole
                   </p>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                  >
+                  <Button variant="outline" className="w-full">
                     Launch Desktop
                   </Button>
                 </div>
@@ -212,9 +201,9 @@ export default function LabSessionPage() {
                   </h3>
                   <div className="space-y-3 text-sm">
                     <div>
-                      <p className="mb-1 text-muted-foreground">SSH Access:</p>
+                      <p className="text-muted-foreground mb-1">SSH Access:</p>
                       <div className="flex items-center gap-2">
-                        <code className="flex-1 rounded bg-muted px-2 py-1 text-xs">
+                        <code className="bg-muted flex-1 rounded px-2 py-1 text-xs">
                           ssh pentester@10.0.1.100
                         </code>
                         <Button
@@ -258,19 +247,17 @@ export default function LabSessionPage() {
                     {activities.map((activity) => (
                       <div
                         key={activity.id}
-                        className="flex gap-3 rounded-lg border bg-card p-3"
+                        className="bg-card flex gap-3 rounded-lg border p-3"
                       >
                         {getActivityIcon(activity.type)}
                         <div className="flex-1">
-                          <p className="text-sm">
-                            {activity.message}
-                          </p>
+                          <p className="text-sm">{activity.message}</p>
                           {activity.user && (
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               {activity.user}
                             </p>
                           )}
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-muted-foreground text-xs">
                             {activity.timestamp.toLocaleTimeString()}
                           </p>
                         </div>
@@ -305,37 +292,33 @@ export default function LabSessionPage() {
                   </TabsList>
 
                   <TabsContent value="terminal" className="mt-4">
-                    <div className="aspect-video rounded-lg border bg-muted/30 p-8">
+                    <div className="bg-muted/30 aspect-video rounded-lg border p-8">
                       <div className="flex h-full flex-col items-center justify-center gap-4">
-                        <Terminal className="h-12 w-12 text-muted-foreground" />
-                        <p className="text-center text-muted-foreground">
+                        <Terminal className="text-muted-foreground h-12 w-12" />
+                        <p className="text-muted-foreground text-center">
                           Apache Guacamole terminal session
                           <br />
                           <span className="text-sm">
                             (Embedded iframe placeholder)
                           </span>
                         </p>
-                        <Button>
-                          Launch Terminal Session
-                        </Button>
+                        <Button>Launch Terminal Session</Button>
                       </div>
                     </div>
                   </TabsContent>
 
                   <TabsContent value="desktop" className="mt-4">
-                    <div className="aspect-video rounded-lg border bg-muted/30 p-8">
+                    <div className="bg-muted/30 aspect-video rounded-lg border p-8">
                       <div className="flex h-full flex-col items-center justify-center gap-4">
-                        <Monitor className="h-12 w-12 text-muted-foreground" />
-                        <p className="text-center text-muted-foreground">
+                        <Monitor className="text-muted-foreground h-12 w-12" />
+                        <p className="text-muted-foreground text-center">
                           Apache Guacamole desktop session
                           <br />
                           <span className="text-sm">
                             (Embedded iframe placeholder)
                           </span>
                         </p>
-                        <Button>
-                          Launch Desktop Session
-                        </Button>
+                        <Button>Launch Desktop Session</Button>
                       </div>
                     </div>
                   </TabsContent>
@@ -343,10 +326,7 @@ export default function LabSessionPage() {
 
                 {/* Session Controls */}
                 <div className="mt-6 flex gap-4">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                  >
+                  <Button variant="outline" className="flex-1">
                     Request Extension
                   </Button>
                   <Button

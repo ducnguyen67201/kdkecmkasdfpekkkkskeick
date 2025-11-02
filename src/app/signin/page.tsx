@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from "~/components/ui/button"
+import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,24 +16,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
-import { Checkbox } from "~/components/ui/checkbox"
-import { OctoLabIcon } from "~/components/ui/octolab-icon"
-import { ShieldCheck } from "lucide-react"
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { Checkbox } from "~/components/ui/checkbox";
+import { OctoLabIcon } from "~/components/ui/octolab-icon";
+import { ShieldCheck } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
   rememberMe: z.boolean(),
-})
+});
 
-type SignInFormValues = z.infer<typeof formSchema>
+type SignInFormValues = z.infer<typeof formSchema>;
 
 export default function SignInPage() {
-  const router = useRouter()
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(formSchema),
@@ -42,43 +42,43 @@ export default function SignInPage() {
       password: "",
       rememberMe: false,
     },
-  })
+  });
 
   async function onSubmit(values: SignInFormValues) {
     try {
-      setIsLoading(true)
-      setError("")
+      setIsLoading(true);
+      setError("");
 
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
         redirect: false,
-      })
+      });
 
       if (result?.error) {
-        setError("Invalid email or password")
-        return
+        setError("Invalid email or password");
+        return;
       }
 
-      router.push("/")
-      router.refresh()
+      router.push("/");
+      router.refresh();
     } catch {
-      setError("An error occurred. Please try again.")
+      setError("An error occurred. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
       {/* System Health Indicator */}
-      <div className="fixed right-6 top-6 flex items-center gap-2 text-sm text-green-600">
+      <div className="fixed top-6 right-6 flex items-center gap-2 text-sm text-green-600">
         <div className="h-2 w-2 rounded-full bg-green-600" />
         <span>System Health: Operational</span>
       </div>
 
       {/* Logo in top-left */}
-      <div className="fixed left-6 top-6 flex items-center gap-2">
+      <div className="fixed top-6 left-6 flex items-center gap-2">
         <OctoLabIcon className="h-8 w-8" />
         <span className="text-xl font-bold">OctoLab</span>
       </div>
@@ -140,7 +140,7 @@ export default function SignInPage() {
                   control={form.control}
                   name="rememberMe"
                   render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2 space-y-0">
+                    <FormItem className="flex items-center space-y-0 space-x-2">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -251,5 +251,5 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

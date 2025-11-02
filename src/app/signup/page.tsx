@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import Link from "next/link"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import Link from "next/link";
 
-import { Button } from "~/components/ui/button"
+import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,11 +15,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
-import { OctoLabIcon } from "~/components/ui/octolab-icon"
-import { ShieldCheck, CheckCircle2 } from "lucide-react"
-import { api } from "~/trpc/react"
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { OctoLabIcon } from "~/components/ui/octolab-icon";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
+import { api } from "~/trpc/react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -27,14 +27,14 @@ const formSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-})
+});
 
 export default function SignUpPage() {
-  const router = useRouter()
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const signUp = api.auth.signUp.useMutation()
+  const signUp = api.auth.signUp.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,19 +43,19 @@ export default function SignUpPage() {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      setError("")
-      await signUp.mutateAsync(values)
-      setSuccess(true)
+      setError("");
+      await signUp.mutateAsync(values);
+      setSuccess(true);
       // Redirect to sign in page after 2 seconds
       setTimeout(() => {
-        router.push("/signin")
-      }, 2000)
+        router.push("/signin");
+      }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create account")
+      setError(err instanceof Error ? err.message : "Failed to create account");
     }
   }
 
@@ -76,13 +76,13 @@ export default function SignUpPage() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
       {/* Logo in top-left */}
-      <div className="fixed left-6 top-6 flex items-center gap-2">
+      <div className="fixed top-6 left-6 flex items-center gap-2">
         <OctoLabIcon className="h-8 w-8" />
         <span className="text-xl font-bold">OctoLab</span>
       </div>
@@ -189,5 +189,5 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

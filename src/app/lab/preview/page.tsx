@@ -82,20 +82,16 @@ export default function LabPreviewPage() {
   };
 
   return (
-    <div className="container mx-auto min-h-screen bg-background p-4">
+    <div className="bg-background container mx-auto min-h-screen p-4">
       <div className="mx-auto max-w-4xl py-8">
         {/* Header */}
         <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={handleBack}
-            className="mb-4"
-          >
+          <Button variant="ghost" onClick={handleBack} className="mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Request
           </Button>
           <h1 className="text-4xl font-bold">Target Summary</h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="text-muted-foreground mt-2">
             Review your lab configuration before provisioning
           </p>
         </div>
@@ -108,7 +104,7 @@ export default function LabPreviewPage() {
                 <CardTitle className="text-2xl">
                   {blueprintDetails.product} v{blueprintDetails.version}
                 </CardTitle>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">
                   Testing {blueprintDetails.cve}
                 </p>
               </div>
@@ -119,9 +115,9 @@ export default function LabPreviewPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Blueprint Section */}
-            <div className="rounded-lg border bg-card p-4">
+            <div className="bg-card rounded-lg border p-4">
               <div className="mb-3 flex items-center gap-2">
-                <Server className="h-5 w-5 text-primary" />
+                <Server className="text-primary h-5 w-5" />
                 <h3 className="font-semibold">Blueprint</h3>
               </div>
               <div className="space-y-2 text-sm">
@@ -133,25 +129,20 @@ export default function LabPreviewPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Type:</span>
-                  <span>
-                    {blueprintDetails.containerType}
-                  </span>
+                  <span>{blueprintDetails.containerType}</span>
                 </div>
               </div>
             </div>
 
             {/* Dependencies Section */}
-            <div className="rounded-lg border bg-card p-4">
+            <div className="bg-card rounded-lg border p-4">
               <div className="mb-3 flex items-center gap-2">
                 <Package className="h-5 w-5 text-blue-500" />
                 <h3 className="font-semibold">Dependencies</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {blueprintDetails.dependencies.map((dep, index) => (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                  >
+                  <Badge key={index} variant="outline">
                     {dep}
                   </Badge>
                 ))}
@@ -159,12 +150,12 @@ export default function LabPreviewPage() {
             </div>
 
             {/* PoC Bundle Section */}
-            <div className="rounded-lg border bg-card p-4">
+            <div className="bg-card rounded-lg border p-4">
               <div className="mb-3 flex items-center gap-2">
                 <AlertCircle className="h-5 w-5 text-orange-500" />
                 <h3 className="font-semibold">PoC Bundle</h3>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {blueprintDetails.pocBundle}
               </p>
             </div>
@@ -173,24 +164,22 @@ export default function LabPreviewPage() {
             <div className="rounded-lg border border-green-500/30 bg-green-50 p-4 dark:bg-green-950/20">
               <div className="mb-3 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
-                <h3 className="font-semibold">
-                  Configuration Details
-                </h3>
+                <h3 className="font-semibold">Configuration Details</h3>
               </div>
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-3">
-                  <User className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <User className="text-muted-foreground mt-0.5 h-4 w-4" />
                   <div className="flex-1">
                     <p className="text-muted-foreground">Admin User:</p>
-                    <p className="font-mono">
-                      {blueprintDetails.adminUser}
-                    </p>
+                    <p className="font-mono">{blueprintDetails.adminUser}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Database className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <Database className="text-muted-foreground mt-0.5 h-4 w-4" />
                   <div className="flex-1">
-                    <p className="text-muted-foreground">Database Credentials:</p>
+                    <p className="text-muted-foreground">
+                      Database Credentials:
+                    </p>
                     <p className="font-mono">
                       {blueprintDetails.dbUsername} /{" "}
                       {blueprintDetails.dbPassword}
@@ -202,10 +191,10 @@ export default function LabPreviewPage() {
 
             {/* Resource Estimation */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg border bg-card p-4">
+              <div className="bg-card rounded-lg border p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <Clock className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-muted-foreground text-sm">
                     Estimated Run Time
                   </span>
                 </div>
@@ -213,10 +202,10 @@ export default function LabPreviewPage() {
                   {blueprintDetails.estimatedTime}
                 </p>
               </div>
-              <div className="rounded-lg border bg-card p-4">
+              <div className="bg-card rounded-lg border p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <Coins className="h-4 w-4 text-yellow-500" />
-                  <span className="text-sm text-muted-foreground">Cost</span>
+                  <span className="text-muted-foreground text-sm">Cost</span>
                 </div>
                 <p className="text-2xl font-bold">
                   {blueprintDetails.cost} credit
@@ -241,9 +230,7 @@ export default function LabPreviewPage() {
                       • All data will be wiped upon termination (save your
                       evidence!)
                     </li>
-                    <li>
-                      • Only one active lab allowed per user at a time
-                    </li>
+                    <li>• Only one active lab allowed per user at a time</li>
                     <li>
                       • {blueprintDetails.severity} severity requires approval
                       (auto-approved for demo)
@@ -255,11 +242,7 @@ export default function LabPreviewPage() {
 
             {/* Action Buttons */}
             <div className="flex gap-4 pt-4">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={handleBack}
-              >
+              <Button variant="outline" className="flex-1" onClick={handleBack}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back
               </Button>
@@ -270,7 +253,7 @@ export default function LabPreviewPage() {
               >
                 {isProvisioning ? (
                   <>
-                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+                    <div className="border-primary-foreground mr-2 h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
                     Provisioning...
                   </>
                 ) : (
@@ -285,11 +268,11 @@ export default function LabPreviewPage() {
         </Card>
 
         {/* Help Text */}
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-6 text-center text-sm">
           Need to change something?{" "}
           <button
             onClick={handleBack}
-            className="text-primary underline hover:text-primary/80"
+            className="text-primary hover:text-primary/80 underline"
           >
             Go back to modify your request
           </button>

@@ -1,7 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "~/components/ui/sidebar"
+import * as React from "react";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,36 +13,40 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb"
-import { Separator } from "~/components/ui/separator"
-import { AppSidebar } from "~/components/app-sidebar"
-import Link from "next/link"
+} from "~/components/ui/breadcrumb";
+import { Separator } from "~/components/ui/separator";
+import { AppSidebar } from "~/components/app-sidebar";
+import Link from "next/link";
 
 interface BreadcrumbItemType {
-  label: string
-  href?: string
+  label: string;
+  href?: string;
 }
 
 interface AppLayoutProps {
-  children: React.ReactNode
-  breadcrumbs?: BreadcrumbItemType[]
+  children: React.ReactNode;
+  breadcrumbs?: BreadcrumbItemType[];
   user?: {
-    name?: string | null
-    email?: string | null
-    image?: string | null
-  }
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
 }
 
-export function AppLayout({ children, breadcrumbs = [], user }: AppLayoutProps) {
+export function AppLayout({
+  children,
+  breadcrumbs = [],
+  user,
+}: AppLayoutProps) {
   return (
     <SidebarProvider className="flex min-h-screen w-full">
       <AppSidebar
         user={user}
-        className="group-data-[state=expanded]:border-r group-data-[state=collapsed]:border-0"
+        className="group-data-[state=collapsed]:border-0 group-data-[state=expanded]:border-r"
       />
       <SidebarInset className="flex flex-1 flex-col overflow-y-auto transition-[margin-left] duration-200 ease-linear md:ml-[var(--sidebar-width)] md:peer-data-[state=collapsed]:ml-[var(--sidebar-width-icon)]">
         {/* Header with Breadcrumb */}
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+        <header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -70,10 +78,8 @@ export function AppLayout({ children, breadcrumbs = [], user }: AppLayoutProps) 
         </header>
 
         {/* Main Content */}
-        <div className="flex flex-1 flex-col">
-          {children}
-        </div>
+        <div className="flex flex-1 flex-col">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

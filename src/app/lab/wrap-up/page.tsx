@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  Clock,
-  FileText,
-  Package,
-  Loader2,
-  CheckCircle2,
-} from "lucide-react";
+import { Clock, FileText, Package, Loader2, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -113,11 +107,11 @@ export default function SessionWrapUpPage() {
   };
 
   return (
-    <div className="container mx-auto min-h-screen bg-background p-4">
+    <div className="bg-background container mx-auto min-h-screen p-4">
       <div className="mx-auto max-w-4xl py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold">Session Summary</h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="text-muted-foreground mt-2">
             Lab #{labId} - Review and collect your evidence
           </p>
         </div>
@@ -129,7 +123,7 @@ export default function SessionWrapUpPage() {
               <div className="flex items-center gap-3">
                 <Clock className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Uptime</p>
+                  <p className="text-muted-foreground text-sm">Total Uptime</p>
                   <p className="text-2xl font-bold">{uptime}</p>
                 </div>
               </div>
@@ -139,12 +133,12 @@ export default function SessionWrapUpPage() {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <FileText className="h-8 w-8 text-primary" />
+                <FileText className="text-primary h-8 w-8" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Evidence Artifacts</p>
-                  <p className="text-2xl font-bold">
-                    {artifacts.length}
+                  <p className="text-muted-foreground text-sm">
+                    Evidence Artifacts
                   </p>
+                  <p className="text-2xl font-bold">{artifacts.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -164,27 +158,27 @@ export default function SessionWrapUpPage() {
               {artifacts.map((artifact) => (
                 <div
                   key={artifact.id}
-                  className="flex items-center justify-between rounded-lg border bg-card p-3"
+                  className="bg-card flex items-center justify-between rounded-lg border p-3"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{getArtifactIcon(artifact.type)}</span>
+                    <span className="text-2xl">
+                      {getArtifactIcon(artifact.type)}
+                    </span>
                     <div>
                       <p className="font-medium">{artifact.name}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {artifact.size} •{" "}
                         {artifact.timestamp.toLocaleTimeString()}
                       </p>
                     </div>
                   </div>
-                  <Badge variant="outline">
-                    {artifact.type}
-                  </Badge>
+                  <Badge variant="outline">{artifact.type}</Badge>
                 </div>
               ))}
             </div>
 
             {artifacts.length === 0 && (
-              <div className="py-8 text-center text-muted-foreground">
+              <div className="text-muted-foreground py-8 text-center">
                 <FileText className="mx-auto mb-2 h-12 w-12 opacity-30" />
                 <p>No evidence artifacts collected</p>
               </div>
@@ -204,7 +198,7 @@ export default function SessionWrapUpPage() {
               onChange={(e) => setNotes(e.target.value)}
               className="min-h-[120px]"
             />
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-xs">
               These notes will be included in your evidence package
             </p>
           </CardContent>
@@ -251,7 +245,7 @@ export default function SessionWrapUpPage() {
               <CardContent className="space-y-4">
                 <div className="flex flex-col items-center gap-4">
                   {teardownProgress < 100 ? (
-                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                    <Loader2 className="text-primary h-12 w-12 animate-spin" />
                   ) : (
                     <CheckCircle2 className="h-12 w-12 text-green-500" />
                   )}
@@ -264,7 +258,7 @@ export default function SessionWrapUpPage() {
                     <Progress value={teardownProgress} />
                   </div>
 
-                  <div className="text-center text-sm text-muted-foreground">
+                  <div className="text-muted-foreground text-center text-sm">
                     {teardownProgress < 30 && "Stopping containers..."}
                     {teardownProgress >= 30 &&
                       teardownProgress < 60 &&

@@ -58,7 +58,11 @@ export function RequestLabClient() {
       name: "WordPress SQL Injection",
       severity: "HIGH" as const,
     },
-    { id: "CVE-2023-9999", name: "Nginx Path Traversal", severity: "MEDIUM" as const },
+    {
+      id: "CVE-2023-9999",
+      name: "Nginx Path Traversal",
+      severity: "MEDIUM" as const,
+    },
   ];
 
   const handleSendMessage = async () => {
@@ -133,7 +137,8 @@ export function RequestLabClient() {
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Request New Lab</h2>
           <p className="text-muted-foreground">
-            Describe the CVE you want to test, and we&apos;ll prepare your environment
+            Describe the CVE you want to test, and we&apos;ll prepare your
+            environment
           </p>
         </div>
       </div>
@@ -184,9 +189,7 @@ export function RequestLabClient() {
                       <CardContent className="space-y-2 text-sm">
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">CVE:</span>
-                          <Badge variant="outline">
-                            {blueprint.cve}
-                          </Badge>
+                          <Badge variant="outline">{blueprint.cve}</Badge>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">Target:</span>
@@ -195,7 +198,9 @@ export function RequestLabClient() {
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Severity:</span>
+                          <span className="text-muted-foreground">
+                            Severity:
+                          </span>
                           <Badge
                             className={getSeverityColor(blueprint.severity)}
                           >
@@ -237,11 +242,11 @@ export function RequestLabClient() {
 
                   {isProcessing && (
                     <div className="flex justify-start">
-                      <div className="rounded-lg bg-muted p-3">
+                      <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center gap-2">
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-primary"></div>
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-primary delay-100"></div>
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-primary delay-200"></div>
+                          <div className="bg-primary h-2 w-2 animate-bounce rounded-full"></div>
+                          <div className="bg-primary h-2 w-2 animate-bounce rounded-full delay-100"></div>
+                          <div className="bg-primary h-2 w-2 animate-bounce rounded-full delay-200"></div>
                         </div>
                       </div>
                     </div>
@@ -251,7 +256,7 @@ export function RequestLabClient() {
 
               {/* Quick Pick CVEs */}
               <div className="mb-4">
-                <p className="mb-2 text-xs text-muted-foreground">Quick Pick</p>
+                <p className="text-muted-foreground mb-2 text-xs">Quick Pick</p>
                 <div className="flex flex-wrap gap-2">
                   {recentCVEs.map((cve) => (
                     <Button
@@ -306,40 +311,34 @@ export function RequestLabClient() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="rounded-lg border bg-card p-3">
+              <div className="bg-card rounded-lg border p-3">
                 <div className="mb-2 flex items-center gap-2">
                   <Zap className="h-4 w-4 text-yellow-500" />
-                  <span className="text-sm font-medium">
-                    Active Labs
-                  </span>
+                  <span className="text-sm font-medium">Active Labs</span>
                 </div>
                 <p className="text-2xl font-bold">0 / 1</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   You can spawn 1 lab at a time
                 </p>
               </div>
 
-              <div className="rounded-lg border bg-card p-3">
+              <div className="bg-card rounded-lg border p-3">
                 <div className="mb-2 flex items-center gap-2">
                   <Shield className="h-4 w-4 text-green-500" />
-                  <span className="text-sm font-medium">
-                    Severity Gate
-                  </span>
+                  <span className="text-sm font-medium">Severity Gate</span>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   HIGH & CRITICAL CVEs require manual approval
                 </p>
               </div>
 
-              <div className="rounded-lg border bg-card p-3">
+              <div className="bg-card rounded-lg border p-3">
                 <div className="mb-2 flex items-center gap-2">
                   <Clock className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm font-medium">
-                    Default TTL
-                  </span>
+                  <span className="text-sm font-medium">Default TTL</span>
                 </div>
                 <p className="text-2xl font-bold">4 hours</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Labs auto-terminate after TTL
                 </p>
               </div>
@@ -349,8 +348,8 @@ export function RequestLabClient() {
                   💡 Pro Tip
                 </p>
                 <p className="mt-1 text-xs text-amber-900 dark:text-amber-100/80">
-                  Be specific about the product version and environment you
-                  need for accurate provisioning.
+                  Be specific about the product version and environment you need
+                  for accurate provisioning.
                 </p>
               </div>
             </CardContent>
@@ -359,40 +358,29 @@ export function RequestLabClient() {
           {/* Manual Form Fallback */}
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle className="text-sm">
-                Manual Form
-              </CardTitle>
+              <CardTitle className="text-sm">Manual Form</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <label className="mb-1 block text-xs text-muted-foreground">
+                <label className="text-muted-foreground mb-1 block text-xs">
                   CVE ID
                 </label>
-                <Input
-                  placeholder="CVE-2023-XXXXX"
-                  className="text-sm"
-                />
+                <Input placeholder="CVE-2023-XXXXX" className="text-sm" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-muted-foreground">
+                <label className="text-muted-foreground mb-1 block text-xs">
                   Product
                 </label>
-                <Input
-                  placeholder="e.g., TotalCMS"
-                  className="text-sm"
-                />
+                <Input placeholder="e.g., TotalCMS" className="text-sm" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-muted-foreground">
+                <label className="text-muted-foreground mb-1 block text-xs">
                   Version
                 </label>
-                <Input
-                  placeholder="e.g., 1.7.4"
-                  className="text-sm"
-                />
+                <Input placeholder="e.g., 1.7.4" className="text-sm" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-muted-foreground">
+                <label className="text-muted-foreground mb-1 block text-xs">
                   Additional Notes
                 </label>
                 <Textarea

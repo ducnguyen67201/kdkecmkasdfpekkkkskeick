@@ -37,7 +37,8 @@ export default function EvidenceDeliveryPage() {
   const [emailSent, setEmailSent] = useState(false);
 
   const downloadLink = `https://octolab.example.com/evidence/lab-${labId}-evidence.zip`;
-  const packageHash = "sha256:a3f8b9c2d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0";
+  const packageHash =
+    "sha256:a3f8b9c2d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0";
 
   const evidenceFiles: EvidenceFile[] = [
     {
@@ -134,11 +135,15 @@ export default function EvidenceDeliveryPage() {
                     {file.icon}
                     <div>
                       <p className="font-medium text-white">{file.name}</p>
-                      <p className="text-sm text-white/60">{file.description}</p>
+                      <p className="text-sm text-white/60">
+                        {file.description}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-white">{file.size}</p>
+                    <p className="text-sm font-medium text-white">
+                      {file.size}
+                    </p>
                     <p className="text-xs text-white/50">
                       {file.hash.slice(0, 12)}
                     </p>
@@ -256,9 +261,7 @@ export default function EvidenceDeliveryPage() {
             <div className="flex items-start gap-3">
               <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
               <div className="flex-1">
-                <p className="font-medium text-white">
-                  PKI Signature Verified
-                </p>
+                <p className="font-medium text-white">PKI Signature Verified</p>
                 <p className="text-sm text-white/70">
                   Package has been digitally signed and verified
                 </p>
@@ -294,7 +297,8 @@ export default function EvidenceDeliveryPage() {
 
             <div className="rounded-lg border border-green-500/30 bg-green-950/20 p-3">
               <p className="text-sm text-green-400">
-                ✓ All evidence files are tamper-proof and cryptographically signed
+                ✓ All evidence files are tamper-proof and cryptographically
+                signed
               </p>
             </div>
           </CardContent>

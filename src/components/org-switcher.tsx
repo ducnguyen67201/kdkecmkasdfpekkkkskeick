@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { ChevronsUpDown } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
+} from "~/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "~/components/ui/sidebar"
-import { OctoLabIcon } from "~/components/ui/octolab-icon"
+} from "~/components/ui/sidebar";
+import { OctoLabIcon } from "~/components/ui/octolab-icon";
 
 export function OrgSwitcher() {
-  const { state } = useSidebar()
+  const { state } = useSidebar();
 
   return (
     <SidebarMenu>
@@ -52,5 +52,5 @@ export function OrgSwitcher() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

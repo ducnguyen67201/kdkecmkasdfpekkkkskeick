@@ -27,9 +27,7 @@ export default async function Home() {
   if (session?.user) {
     return (
       <HydrateClient>
-        <AppLayout
-          user={session.user}
-        >
+        <AppLayout user={session.user}>
           <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
               <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -68,14 +66,14 @@ export default async function Home() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
+                        className="text-muted-foreground h-4 w-4"
                       >
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                       </svg>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">0</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         +0% from last month
                       </p>
                     </CardContent>
@@ -93,7 +91,7 @@ export default async function Home() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
+                        className="text-muted-foreground h-4 w-4"
                       >
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                         <circle cx="9" cy="7" r="4" />
@@ -102,14 +100,16 @@ export default async function Home() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">0</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         No running environments
                       </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">CVEs Tested</CardTitle>
+                      <CardTitle className="text-sm font-medium">
+                        CVEs Tested
+                      </CardTitle>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -118,7 +118,7 @@ export default async function Home() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
+                        className="text-muted-foreground h-4 w-4"
                       >
                         <rect width="20" height="14" x="2" y="5" rx="2" />
                         <path d="M2 10h20" />
@@ -126,7 +126,7 @@ export default async function Home() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">0</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         +0 since last week
                       </p>
                     </CardContent>
@@ -144,14 +144,14 @@ export default async function Home() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
+                        className="text-muted-foreground h-4 w-4"
                       >
                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                       </svg>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">--</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         No data yet
                       </p>
                     </CardContent>
@@ -189,16 +189,15 @@ export default async function Home() {
   // If user is not logged in, show the landing page
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-background">
+      <main className="bg-background flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             Octo<span className="text-primary">Lab</span>
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-muted-foreground text-xl">
             Secure CVE Testing Environment
           </p>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8"></div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl">
               {hello ? hello.greeting : "Loading tRPC query..."}
@@ -208,13 +207,13 @@ export default async function Home() {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/signin"
-                  className="rounded-full bg-secondary px-10 py-3 font-semibold text-secondary-foreground no-underline transition hover:bg-secondary/80"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full px-10 py-3 font-semibold no-underline transition"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="rounded-full bg-primary px-10 py-3 font-semibold text-primary-foreground no-underline transition hover:bg-primary/90"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-3 font-semibold no-underline transition"
                 >
                   Sign up
                 </Link>

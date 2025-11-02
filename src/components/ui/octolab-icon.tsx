@@ -1,8 +1,10 @@
-import * as React from "react"
+import * as React from "react";
 
 export function OctoLabIcon({ className }: { className?: string }) {
   return (
-    <div className={`flex items-center justify-center rounded-2xl bg-blue-600 p-4 ${className ?? ""}`}>
+    <div
+      className={`flex items-center justify-center rounded-2xl bg-blue-600 p-4 ${className ?? ""}`}
+    >
       <svg
         width="32"
         height="32"
@@ -27,5 +29,5 @@ export function OctoLabIcon({ className }: { className?: string }) {
         />
       </svg>
     </div>
-  )
+  );
 }

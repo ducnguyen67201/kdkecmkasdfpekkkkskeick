@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Home,
   FlaskConical,
@@ -13,9 +13,9 @@ import {
   BarChart3,
   Bell,
   HelpCircle,
-} from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -29,15 +29,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "~/components/ui/sidebar"
+} from "~/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { SearchForm } from "~/components/search-form"
-import { OrgSwitcher } from "~/components/org-switcher"
+} from "~/components/ui/dropdown-menu";
+import { SearchForm } from "~/components/search-form";
+import { OrgSwitcher } from "~/components/org-switcher";
 
 // Navigation data structure
 const data = {
@@ -117,21 +117,31 @@ const data = {
       ],
     },
   ],
-}
+};
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user?: {
-    name?: string | null
-    email?: string | null
-    image?: string | null
-  }
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
 }
 
-export function AppSidebar({ user, variant, className, ...props }: AppSidebarProps) {
-  const pathname = usePathname()
+export function AppSidebar({
+  user,
+  variant,
+  className,
+  ...props
+}: AppSidebarProps) {
+  const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" variant={variant} className={className} {...props}>
+    <Sidebar
+      collapsible="icon"
+      variant={variant}
+      className={className}
+      {...props}
+    >
       <SidebarHeader>
         <OrgSwitcher />
         <SearchForm />
@@ -145,7 +155,10 @@ export function AppSidebar({ user, variant, className, ...props }: AppSidebarPro
               <SidebarMenu>
                 {item.items.map((subItem) => (
                   <SidebarMenuItem key={subItem.title}>
-                    <SidebarMenuButton asChild isActive={pathname === subItem.url}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === subItem.url}
+                    >
                       <Link href={subItem.url}>
                         <subItem.icon />
                         <span>{subItem.title}</span>
@@ -214,5 +227,5 @@ export function AppSidebar({ user, variant, className, ...props }: AppSidebarPro
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

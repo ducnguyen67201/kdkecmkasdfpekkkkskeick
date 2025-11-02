@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { signOut } from "next-auth/react"
-import { OctoLabIcon } from "~/components/ui/octolab-icon"
+import { useEffect } from "react";
+import { signOut } from "next-auth/react";
+import { OctoLabIcon } from "~/components/ui/octolab-icon";
 
 export default function SignOutPage() {
   useEffect(() => {
     // Automatically sign out and redirect to signin page
-    void signOut({ callbackUrl: "/signin" })
-  }, [])
+    void signOut({ callbackUrl: "/signin" });
+  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -22,5 +22,5 @@ export default function SignOutPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }
