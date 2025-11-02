@@ -12,6 +12,8 @@ jobs:
   lint-and-typecheck:
     name: Lint and Type Check
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:password@localhost:5432/cyber_octopus
 
     steps:
       - name: Checkout code
