@@ -10,7 +10,7 @@ import { Button } from "~/components/ui/button"
 export function CalendarDateRangePicker({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<Date>(new Date())
+  const [date] = React.useState<Date>(new Date())
 
   return (
     <div className={cn("grid gap-2", className)}>

@@ -25,15 +25,17 @@ import { ShieldCheck } from "lucide-react"
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
-  rememberMe: z.boolean().default(false),
+  rememberMe: z.boolean(),
 })
+
+type SignInFormValues = z.infer<typeof formSchema>
 
 export default function SignInPage() {
   const router = useRouter()
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<SignInFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -42,7 +44,7 @@ export default function SignInPage() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: SignInFormValues) {
     try {
       setIsLoading(true)
       setError("")
@@ -60,7 +62,7 @@ export default function SignInPage() {
 
       router.push("/")
       router.refresh()
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)

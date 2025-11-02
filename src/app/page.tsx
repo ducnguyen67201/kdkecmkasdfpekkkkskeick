@@ -2,7 +2,6 @@ import Link from "next/link";
 import { CalendarDateRangePicker } from "~/components/date-range-picker";
 import { Overview } from "~/components/overview";
 import { RecentActivity } from "~/components/recent-activity";
-import { LatestPost } from "~/app/_components/post";
 import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { AppLayout } from "~/components/app-layout";
