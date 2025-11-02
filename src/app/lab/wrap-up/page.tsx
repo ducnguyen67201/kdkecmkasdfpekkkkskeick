@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Clock, FileText, Package, Loader2, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -17,7 +17,7 @@ interface Artifact {
   timestamp: Date;
 }
 
-export default function SessionWrapUpPage() {
+function SessionWrapUpContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const labId = searchParams.get("id") ?? "4821";
@@ -278,5 +278,19 @@ export default function SessionWrapUpPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SessionWrapUpPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
+      <SessionWrapUpContent />
+    </Suspense>
   );
 }

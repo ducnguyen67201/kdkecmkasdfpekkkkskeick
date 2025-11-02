@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Download,
@@ -26,7 +26,7 @@ interface EvidenceFile {
   icon: React.ReactNode;
 }
 
-export default function EvidenceDeliveryPage() {
+function EvidenceDeliveryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const labId = searchParams.get("id") ?? "4821";
@@ -330,5 +330,19 @@ export default function EvidenceDeliveryPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function EvidenceDeliveryPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
+      <EvidenceDeliveryContent />
+    </Suspense>
   );
 }

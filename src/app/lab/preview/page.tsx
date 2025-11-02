@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -33,7 +33,7 @@ interface BlueprintDetails {
   cost: number;
 }
 
-export default function LabPreviewPage() {
+function LabPreviewContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isProvisioning, setIsProvisioning] = useState(false);
@@ -279,5 +279,19 @@ export default function LabPreviewPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LabPreviewPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
+      <LabPreviewContent />
+    </Suspense>
   );
 }

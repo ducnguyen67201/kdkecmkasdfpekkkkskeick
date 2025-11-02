@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   CheckCircle2,
@@ -33,7 +33,7 @@ interface LogEntry {
   type: "info" | "success" | "error";
 }
 
-export default function ProvisionPage() {
+function ProvisionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const labId = searchParams.get("id") ?? "4821";
@@ -376,5 +376,19 @@ export default function ProvisionPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ProvisionPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
+      <ProvisionContent />
+    </Suspense>
   );
 }
